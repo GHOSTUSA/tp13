@@ -3,7 +3,7 @@ services:
     image: localhost:5000/api-tp13:1.0.0
     pull_policy: always
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000/healthz"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:${PORT}/healthz"]
       interval: 10s
       timeout: 3s
       retries: 3

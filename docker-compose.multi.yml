@@ -1,0 +1,68 @@
+services:
+  cat:
+    image: localhost:5000/api-tp13:1.0.0
+    pull_policy: always
+    networks:
+      - app-network
+    environment:
+      - PORT=8081
+      - PET=cat
+    env_file:
+      - .env
+    expose:
+      - "8081"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8081/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+
+  dog:
+    image: localhost:5000/api-tp13:1.0.0
+    pull_policy: always
+    networks:
+      - app-network
+    environment:
+      - PORT=8081
+      - PET=dog
+    env_file:
+      - .env
+    expose:
+      - "8081"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8081/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "8081:80"
+    networks:
+      - app-network
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      cat:
+        condition: service_healthy
+      dog:
+        condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
