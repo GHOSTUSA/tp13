@@ -55,4 +55,10 @@ Les elements qui sont recréable automatiquement sont les images (via Dockerfile
 
 # Partie 8 - Volumes
 
+docker volume ls
+(il reste des volumes de projet précédent)
+![description](captures/c7.png)
+
+docker volume inspect
+![description](captures/c8.png)
 
