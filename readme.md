@@ -24,7 +24,9 @@ J'ai choisis node:20-alpine à la place de node:latest car c'est une version sta
 # Partie 5 - Validation de la stack
 
 ![description](captures/c4.png)
+
 ![description](captures/c5.png)
+
 ![description](captures/c6.png)
 
 # Partie 6 - Question théoriques
@@ -50,5 +52,7 @@ console.log(password);
 Les elements qui sont recréable automatiquement sont les images (via Dockerfile ou registry), les containers(via docker compose up) et les reseaux(via docker compose up). Et ce qui ne l'est pas sont les volumes par exemple, notamment pour les bases de données. Il est donc important d'en faire régulirement des dump.
 
 # Partie 7 - Observabilité & Production
+
+# Partie 8 - Volumes
 
 

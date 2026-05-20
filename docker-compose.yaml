@@ -12,7 +12,7 @@ services:
       retries: 3
       start_period: 15s
     ports:
-      - "${API_PORT}:${API_PORT}"
+      - "${APP_HOST_PORT}:${API_PORT}"
     env_file:
       - .env
     deploy:

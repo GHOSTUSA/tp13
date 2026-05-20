@@ -3,7 +3,7 @@ services:
     image: registry
     container_name: registry
     ports:
-      - "${REGISTRY_PORT}:${REGISTRY_PORT}"
+      - "${REGISTRY_PORT}:${REGISTRY_CONTAINER_PORT}"
     environment:
       - REGISTRY_CATALOG_MAXENTRIES=${REGISTRY_CATALOG_MAXENTRIES}
     volumes:
@@ -14,13 +14,13 @@ services:
     image: joxit/docker-registry-ui:static
     container_name: registry-ui
     ports:
-      - "${REGISTRY_UI_PORT}:80"
+      - "${REGISTRY_UI_PORT}:${REGISTRY_UI_CONTAINER_PORT}"
     environment:
       - REGISTRY_TITLE=${REGISTRY_TITLE}
-      - REGISTRY_URL=http://registry:${REGISTRY_PORT}
+      - REGISTRY_URL=http://registry:${REGISTRY_CONTAINER_PORT}
       - DELETE_IMAGES=${REGISTRY_DELETE_IMAGES}
       - CATALOG_ELEMENTS_LIMIT=${REGISTRY_CATALOG_ELEMENTS_LIMIT}
-      - NGINX_PROXY_PASS_URL=http://registry:${REGISTRY_PORT}
+      - NGINX_PROXY_PASS_URL=http://registry:${REGISTRY_CONTAINER_PORT}
       - SINGLE_REGISTRY=${REGISTRY_SINGLE_REGISTRY}
     depends_on:
       - registry
