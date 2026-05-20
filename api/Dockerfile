@@ -2,7 +2,7 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json package-lock.json ./
 
 RUN npm install --only=production
 
@@ -17,7 +17,5 @@ RUN chown node:node /app
 COPY --from=builder --chown=node:node /app /app
 
 USER node
-
-EXPOSE 3000
 
 CMD ["node", "serveur.js"]

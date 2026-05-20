@@ -1,18 +1,18 @@
 services:
   cat:
-    image: localhost:5000/api-tp13:1.0.0
+    image: localhost:${REGISTRY_PORT}/api-tp13:1.0.0
     pull_policy: always
     networks:
       - app-network
     environment:
-      - PORT=8081
-      - PET=cat
+      - PORT=${API_PORT}
+      - PET=${PET_CAT}
     env_file:
       - .env
     expose:
-      - "8081"
+      - "${API_PORT}"
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8081/healthz"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:${API_PORT}/healthz"]
       interval: 10s
       timeout: 3s
       retries: 3
@@ -24,19 +24,19 @@ services:
           memory: 256M
 
   dog:
-    image: localhost:5000/api-tp13:1.0.0
+    image: localhost:${REGISTRY_PORT}/api-tp13:1.0.0
     pull_policy: always
     networks:
       - app-network
     environment:
-      - PORT=8081
-      - PET=dog
+      - PORT=${API_PORT}
+      - PET=${PET_DOG}
     env_file:
       - .env
     expose:
-      - "8081"
+      - "${API_PORT}"
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8081/healthz"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:${API_PORT}/healthz"]
       interval: 10s
       timeout: 3s
       retries: 3
@@ -51,7 +51,7 @@ services:
     image: nginx:alpine
     container_name: nginx
     ports:
-      - "8081:80"
+      - "${NGINX_PORT}:80"
     networks:
       - app-network
     volumes:

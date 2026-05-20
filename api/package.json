@@ -1,5 +1,5 @@
 {
-  "name": "tp9-optimized-node",
+  "name": "tp13-api",
   "version": "1.0.0",
   "main": "app.js",
   "dependencies": {
@@ -8,12 +8,5 @@
   },
   "scripts": {
      "start": "node serveur.js"
-  },
-  "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "eslint": "^10.4.0",
-    "globals": "^17.6.0",
-    "jest": "^30.4.2",
-    "supertest": "^7.2.2"
   }
 }

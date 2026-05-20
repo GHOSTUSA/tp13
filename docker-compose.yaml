@@ -1,16 +1,18 @@
 services:
   app:
-    image: localhost:5000/api-tp13:1.0.0
+    image: localhost:${REGISTRY_PORT}/api-tp13:1.0.0
     pull_policy: always
+    environment:
+      - PORT=${API_PORT}
+      - PET=${PET_APP}
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:${PORT}/healthz"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:${API_PORT}/healthz"]
       interval: 10s
       timeout: 3s
       retries: 3
       start_period: 15s
-
     ports:
-      - "${PORT}:${PORT}"
+      - "${API_PORT}:${API_PORT}"
     env_file:
       - .env
     deploy:
