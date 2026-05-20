@@ -2,7 +2,8 @@ name: Docker CI
 
 on:
   push:
-  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -15,25 +16,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set image metadata
+        run: |
+          OWNER=$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          echo "IMAGE=ghcr.io/${OWNER}/mon-api" >> "$GITHUB_ENV"
+          echo "SHORT_SHA=${SHORT_SHA}" >> "$GITHUB_ENV"
+
       - name: Build image
-        run: docker build -t my-app:${{ github.sha }} .
+        run: docker build -f api/Dockerfile -t "${IMAGE}:git-${SHORT_SHA}" ./api
 
       - name: Scan image (Trivy)
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: my-app:${{ github.sha }}
+          image-ref: ${{ env.IMAGE }}:git-${{ env.SHORT_SHA }}
           exit-code: '1'
           severity: 'CRITICAL'
-          # 11 HiGH
-
-      - name: Generate SBOM
-        run: trivy image --format cyclonedx --output sbom.json my-app:${{ github.sha }}
-
-      - name: Upload SBOM as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: sbom
-          path: sbom.json
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -44,9 +42,4 @@ jobs:
 
       - name: Push to GitHub Container Registry
         run: |
-          OWNER=$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')
-          IMAGE=ghcr.io/$OWNER/my-app
-          docker tag my-app:${{ github.sha }} "$IMAGE:${{ github.sha }}"
-          docker tag my-app:${{ github.sha }} "$IMAGE:latest"
-          docker push "$IMAGE:${{ github.sha }}"
-          docker push "$IMAGE:latest"
+          docker push "${IMAGE}:git-${SHORT_SHA}"
