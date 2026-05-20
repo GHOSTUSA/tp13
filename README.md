@@ -63,3 +63,11 @@ docker volume inspect
 ![description](captures/c8.png)
 
 # Partie 9 - CI/CD avec GitHub Actions
+
+![description](captures/c9.png)
+
+# Partie 10 - Déploiement sur VPS
+
+### Api => http://31.207.36.151:8081/ 
+### Registry UI => http://31.207.36.151:40115/ 
+### Grafana => http://31.207.36.151:40118/?orgId=1&refresh=30s
